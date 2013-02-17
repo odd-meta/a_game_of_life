@@ -1,7 +1,9 @@
 # A(gent) Game of Life
 
-Using the an agent model
+The game of life using an agent model
 
+
+## AGENTS
 Each live cell will be defined as an Agent
 
 Each agent keeps track of it's own position, as well as the environment
@@ -30,7 +32,7 @@ then look for Y coordinates within a +/- range, this is your list to return
 a step here could be added for Z, and t, if desired
 
 
-The Change Buffer
+## CHANGE BUFFER
 
 step through the agents for an area and evaluate their actions for this step based on rules
 put those actions into the first-stage change buffer
@@ -43,7 +45,7 @@ repeat
 this might lockup if actions and conflicts interact to create a never-ending loop of conflict resolutions
 
 
-The environment
+## ENVIRONMENT
 
 a container for a given area that knows about adjacent areas
 
@@ -53,10 +55,13 @@ area, area-coordinates
 
 where all area-coordinates are an x by y grid, this, prefixed with an area identifier, defines a position in global space
 
-every area has a bounding fuction that will return the "edges" of the area
+every area has a bounding fuction that will return the "edges" of the area; this is a list of lists of coordinate tuples
+
+each list of tuples defines a bounding 
 
 also know about agents within it
 
+if it is found that an agent will move to another area
 
 
 ## RULES
@@ -69,9 +74,14 @@ agent-agent
 * the game of life is focused on mating behavior
 
 environment-environment
-* 
+* these involve properties of the environment, ambient resources, weather, etc
+* not really applicable to the classic game of life
 
 agent-environment
-
+* these control how the agents react to properties of their environment, eating sugar in sugarscape, for example
+* not really applicable to the classic game of life
 
 TODO
+
+* create the agent class
+** define 
