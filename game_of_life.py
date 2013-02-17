@@ -1,40 +1,5 @@
 import pygame
 from pygame.locals import *
-"""
-Game of Life
-
-Using the Agent, Environment, Rules model
-
-Each cell will be defined in an environment matrix
-
-Each live cell will be defined as an Agent
-
-
-Every agent is visited in the list of agents and told to run against the defined rules based on it's environment
-
-The changes are buffered until all changes are collected from all agents, then all changes are applied in the sequence they were collected
-
-Changes are a result from the agents interacting with the rules
-
-RULES:
-based off of the definitions in "Growing Artificial Societies"
-
-agent-agent
-
-environment-environment
-
-
-environment-agent
-
-
-TODO
-
-
-
-
-
-
-"""
 
 class Agent:
     pass
