@@ -38,3 +38,6 @@ nosetests.xml
 #Sublime
 *.sublime-workspace
 *.sublime-project
+
+build
+dist
