@@ -203,7 +203,7 @@ class App:
         self._running = True
         self._display_surf = None
         #TODO: make this work with a non-square grid
-        self.size = self.width, self.height = 800, 800
+        self.size = self.width, self.height = 900, 900
         self.bgcolor = 0, 0, 0
         self.DO_STEP_EVENT = pygame.USEREVENT+1
         self.IS_PAUSED = False
@@ -213,6 +213,9 @@ class App:
  
     def on_init(self):
         pygame.init()
+        icon_surface = pygame.image.load("icon.bmp")
+        pygame.display.set_icon(icon_surface)
+        pygame.display.set_caption("cellular automata makes krishna-jesus smile")
         self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
 
         self._running = True
@@ -267,7 +270,7 @@ class App:
             self._running = False
 
         pygame.time.set_timer(self.DO_STEP_EVENT, self.STEP_SPEED)
- 
+        
         while( self._running ):
             self.pre_loop()
             
