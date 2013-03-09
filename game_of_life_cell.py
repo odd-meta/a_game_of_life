@@ -22,6 +22,12 @@ class Grid:
 
 	def do_step(self):
 		new_state = []
+
+		for r in range(0,self.max_width):
+			new_state.append([])
+			for c in range(0,self.max_height):
+				new_state[r].append(None)
+
 		for row_index, row in enumerate(self.state):
 			
 			for cell_index, cell in enumerate(row):
@@ -83,6 +89,7 @@ class Grid:
 					right_side_y = 0
 				else:
 					right_side_y = cell_index + 1
+				right_side_x = row_index
 
 				#get bottom row
 				bottom_left_y = None
@@ -126,6 +133,37 @@ class Grid:
 									(bottom_left_x,bottom_left_y),
 									(bottom_x,bottom_y),
 									(bottom_right_x,bottom_right_y)]
+				#evaluate our next state based on rules
+
+				#get number of adjacent alive cells
+				alive_cells = 0
+
+				for cell in adjacent_cells:
+					alive_cells += int(self.state[cell[0]][cell[1]])
+
+				our_state = int(self.state[row_index][cell_index])
+				our_new_state = None
+				if our_state is 1:
+					if alive_cells > 3:
+						our_new_state = 0
+					elif alive_cells < 2:
+						our_new_state = 0
+					elif alive_cells is 2 or alive_cells is 3:
+						our_new_state = 1
+					else:
+						print "i cant even boolean logic"
+				else:
+					if alive_cells is 3:
+						our_new_state = 1
+					else:
+						our_new_state = 0
+				new_state[row_index][cell_index] = our_new_state
+
+
+
+
+
+		self.state = new_state
 
 
 
@@ -214,4 +252,12 @@ if __name__ == "__main__" :
     #theApp.on_execute()
 
     theGrid = Grid()
+    print theGrid
+    theGrid.do_step()
+    print theGrid
+    theGrid.do_step()
+    print theGrid
+    theGrid.do_step()
+    print theGrid
+    theGrid.do_step()
     print theGrid
