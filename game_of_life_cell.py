@@ -13,7 +13,7 @@ class Agent:
 
 class Grid:
 
-	def __init__(self, state = [], max_width = 10, max_height = 10):
+	def __init__(self, state = [], max_width = 20, max_height = 20):
 		self.state = state
 		self.max_width = max_width
 		self.max_height = max_height
@@ -64,10 +64,10 @@ class Grid:
 					top_right_y = 0
 				else:
 					top_right_y = cell_index + 1
-				if row_index + 1 >= self.max_width:
-					top_right_x = 0
+				if row_index - 1 < 0:
+					top_right_x = self.max_width -1
 				else:
-					top_right_x = row_index + 1
+					top_right_x = row_index - 1
 
 
 				#get sides
@@ -136,12 +136,15 @@ class Grid:
 				#evaluate our next state based on rules
 
 				#get number of adjacent alive cells
+				our_state = int(self.state[row_index][cell_index])
 				alive_cells = 0
 
 				for cell in adjacent_cells:
+					#if our_state is 1:
+					#	print str(self.state[cell[0]][cell[1]])+" "+str( (cell[0],cell[1]) )
 					alive_cells += int(self.state[cell[0]][cell[1]])
 
-				our_state = int(self.state[row_index][cell_index])
+				
 				our_new_state = None
 				if our_state is 1:
 					if alive_cells > 3:
@@ -158,11 +161,15 @@ class Grid:
 					else:
 						our_new_state = 0
 				new_state[row_index][cell_index] = our_new_state
+				#if our_state is 1:
+				#	print alive_cells
+				#	print (row_index,cell_index)
+					
 
 
 
 
-
+		#print "*****"
 		self.state = new_state
 
 
@@ -195,8 +202,14 @@ class App:
     def __init__(self):
         self._running = True
         self._display_surf = None
-        self.size = self.width, self.height = 1440, 900
+        #TODO: make this work with a non-square grid
+        self.size = self.width, self.height = 800, 800
         self.bgcolor = 0, 0, 0
+        self.DO_STEP_EVENT = pygame.USEREVENT+1
+        self.IS_PAUSED = False
+        self.STEP_SPEED = 100
+        self.BOARD_DIMENSIONS = (self.width/20,self.height/20)
+        self.CELL_SIZE = self.width / (self.width / 20)
  
     def on_init(self):
         pygame.init()
@@ -209,20 +222,38 @@ class App:
  
     def on_event(self, event):
         
+        if event.type == self.DO_STEP_EVENT:
+	        self._display_surf.fill( self.bgcolor )
+        	self.theGrid.do_step()
+	        the_state = self.theGrid.state
+	        for row_index, row in enumerate(the_state):
+	        	for cell_index, cell in enumerate(row):
+	        		if int(the_state[row_index][cell_index]) is 1:
+	        			pygame.draw.circle(self._display_surf, (255,255,255), (row_index * self.CELL_SIZE + self.CELL_SIZE/2, cell_index * self.CELL_SIZE + self.CELL_SIZE/2), self.CELL_SIZE/2, self.CELL_SIZE/2/2)
         
         if event.type == pygame.QUIT:
             self._running = False
             
-
         elif event.type == pygame.MOUSEMOTION:
-            print "mouse at (%d, %d)" % event.pos
-            self._display_surf.fill( self.bgcolor )
-            pygame.draw.circle(self._display_surf, (255,255,255), event.pos, 64, 0)
+
+            pass
+
+
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            print "You released the left mouse button at (%d, %d)" % event.pos
+            #print "mouse at (%d, %d)" % event.pos
+            #self._display_surf.fill( self.bgcolor )
+            #pygame.draw.circle(self._display_surf, (255,255,255), event.pos, 64, 0)
+            if self.IS_PAUSED is False:
+                self.IS_PAUSED = True
+                pygame.time.set_timer(self.DO_STEP_EVENT, 0)
+            else:
+                pygame.time.set_timer(self.DO_STEP_EVENT, self.STEP_SPEED)
+            #print "You released the left mouse button at (%d, %d)" % event.pos
             
     def on_loop(self):
-        pass
+    	pass
+
+
     
     def on_render(self):
         pygame.display.flip()
@@ -231,9 +262,11 @@ class App:
         pygame.quit()
  
     def on_execute(self):
-        
+        self.theGrid = Grid(max_width=self.BOARD_DIMENSIONS[0],max_height=self.BOARD_DIMENSIONS[1])
         if self.on_init() == False:
             self._running = False
+
+        pygame.time.set_timer(self.DO_STEP_EVENT, self.STEP_SPEED)
  
         while( self._running ):
             self.pre_loop()
@@ -248,16 +281,6 @@ class App:
  
 if __name__ == "__main__" :
 
-    #theApp = App()
-    #theApp.on_execute()
+    theApp = App()
+    theApp.on_execute()
 
-    theGrid = Grid()
-    print theGrid
-    theGrid.do_step()
-    print theGrid
-    theGrid.do_step()
-    print theGrid
-    theGrid.do_step()
-    print theGrid
-    theGrid.do_step()
-    print theGrid
