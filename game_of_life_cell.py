@@ -5,7 +5,21 @@
 import pygame
 from pygame.locals import *
 
+import sys
+import os
 import random
+
+#little diddy to make resources work with pyinstaller onefile mode exes
+#thanks to http://stackoverflow.com/a/7675014
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 class Agent:
     pass
@@ -213,7 +227,7 @@ class App:
  
     def on_init(self):
         pygame.init()
-        icon_surface = pygame.image.load("icon.bmp")
+        icon_surface = pygame.image.load( resource_path("assets"+os.sep+"icon.bmp") )
         pygame.display.set_icon(icon_surface)
         pygame.display.set_caption("cellular automata makes krishna-jesus smile")
         self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
