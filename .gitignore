@@ -1,3 +1,6 @@
+pyinstaller-2.0
+a_README.md
+
 *.py[cod]
 
 # C extensions
