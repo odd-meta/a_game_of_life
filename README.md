@@ -13,3 +13,5 @@ Running game_of_life_cell.py should create a pygame window with a running game o
 ## TODO
 
 Get pyinstalled exe generation scripted and working in a self contained manner.
+
+Get grid generation working with something other than a square.
